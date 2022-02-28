@@ -5,6 +5,8 @@
 -- To reset the sample schema, replace everything with
 -- two dots ('..' - without quotes).
 
+-- Data Modeling & Engineering
+
 CREATE TABLE employees (
     emp_no int   NOT NULL,
     emp_title_id varchar(5)   NOT NULL,
@@ -67,3 +69,75 @@ REFERENCES "departments" ("dept_no");
 ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_emp_no" FOREIGN KEY("emp_no")
 REFERENCES "employees" ("emp_no");
 
+-- Data Analysis
+
+-- Question 1
+
+SELECT e.emp_no, last_name, first_name, sex, s.salary
+FROM employees AS e
+INNER JOIN salaries AS s 
+ON e.emp_no=s.emp_no
+
+-- Question 2
+
+SELECT first_name, last_name, hire_date
+FROM employees
+WHERE hire_date BETWEEN '1986-01-01' AND '1986-12-31'
+ORDER BY hire_date
+
+-- Question 3
+
+SELECT d.dept_no, dept_name, e.emp_no, last_name, first_name
+FROM employees AS e 
+INNER JOIN dept_manager AS d 
+ON e.emp_no=d.emp_no
+INNER JOIN departments AS m 
+ON d.dept_no=m.dept_no	
+
+-- Question 4
+
+SELECT e.emp_no, last_name, first_name, dept_name
+FROM employees AS e 
+INNER JOIN dept_emp AS d 
+ON e.emp_no=d.emp_no
+INNER JOIN departments AS m 
+ON d.dept_no=m.dept_no
+
+-- Question 5
+
+SELECT first_name, last_name, sex
+FROM employees
+WHERE first_name = 'Hercules' and last_name LIKE 'B%'
+
+-- Question 6
+
+SELECT e.emp_no, last_name, first_name, dept_name
+FROM employees AS e 
+INNER JOIN dept_emp AS d 
+ON e.emp_no=d.emp_no
+INNER JOIN departments AS m 
+ON d.dept_no=m.dept_no
+WHERE dept_name = 'Sales' 
+
+-- Question 7
+
+SELECT e.emp_no, last_name, first_name, dept_name
+FROM employees AS e 
+INNER JOIN dept_emp AS d 
+ON e.emp_no=d.emp_no
+INNER JOIN departments AS m 
+ON d.dept_no=m.dept_no
+WHERE dept_name = 'Sales' OR dept_name = 'Development'
+
+-- Question 8
+
+SELECT last_name,
+COUNT(last_name) AS "frequency"
+FROM employees
+GROUP BY last_name
+ORDER BY COUNT(last_name)
+DESC
+
+-- The name Foolsday sounds suspicious!
+
+-- Bonus
